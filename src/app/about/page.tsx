@@ -1,95 +1,122 @@
 import Link from "next/link";
+import { ArrowRight, Globe2, Layers, Sparkles, Target } from "lucide-react";
 import { PageShell } from "@/components/shared/page-shell";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { mockTeamMembers } from "@/data/mock-data";
 import { SITE_CONFIG } from "@/lib/site-config";
 
-const highlights = [
-  { label: "Local businesses listed", value: "8.6k+" },
-  { label: "Categories covered", value: "120+" },
-  { label: "Cities & towns", value: "340+" },
+const milestones = [
+  { year: "2019", title: "First connections", body: "We started as a small team wiring together local data, search, and owner tools so communities could find real businesses faster." },
+  { year: "2022", title: "Platform depth", body: "Expanded categories, richer media, and calmer discovery patterns—built for trust, not noise." },
+  { year: "Today", title: "Ideas to solutions", body: "We connect ideas with practical surfaces: listings, guides, and partner-ready experiences that stay easy to maintain." },
 ];
 
-const values = [
-  { title: "Trust-first listings", description: "Clear hours, contact info, and photos so people can choose local businesses with confidence." },
-  { title: "Built for search", description: "Fast filters and maps-style browsing so visitors find the right listing quickly." },
-  { title: "Fair for owners", description: "Simple tools to claim, update, and showcase your business on the directory." },
+const principles = [
+  { icon: Target, title: "Clarity first", body: "Every screen should answer “what can I do here?” in seconds—whether you are browsing, publishing, or partnering." },
+  { icon: Layers, title: "Structured data", body: "Consistent fields and honest metadata power better search, fewer dead ends, and happier owners." },
+  { icon: Globe2, title: "Local by design", body: "Coverage, language, and tone respect the neighborhoods we serve—not a one-size template." },
+  { icon: Sparkles, title: "Calm craft", body: "We prefer generous spacing, readable type, and soft gradients over clutter—same rhythm as our home experience." },
 ];
 
 export default function AboutPage() {
   return (
     <PageShell
-      title={`About ${SITE_CONFIG.name}`}
-      description={`${SITE_CONFIG.name} is a local business directory—helping people discover listings nearby and helping owners get found.`}
+      heroAccent
+      eyebrow="About us"
+      title={`We connect ideas. We build what ships.`}
+      description={`${SITE_CONFIG.name} exists to turn local intent into confident decisions—clear listings, thoughtful discovery, and tools owners actually use.`}
       actions={
         <>
-          <Button variant="outline" asChild>
-            <Link href="/team">Our team</Link>
+          <Button variant="outline" className="rounded-full border-slate-200 bg-white" asChild>
+            <Link href="/team">Meet the team</Link>
           </Button>
-          <Button variant="outline" asChild>
-            <Link href="/contact">Contact</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/listings">Browse listings</Link>
+          <Button className="rounded-full bg-slate-950 text-white hover:bg-slate-800" asChild>
+            <Link href="/listings" className="inline-flex items-center gap-2">
+              Explore listings
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </Button>
         </>
       }
     >
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="border-border bg-card">
-          <CardContent className="space-y-4 p-6">
-            <Badge variant="secondary">Our story</Badge>
-            <h2 className="text-2xl font-semibold text-foreground">
-              A calmer place to list and find local businesses.
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              We focus on one job: making business listings easy to read, easy to update, and easy to discover.
-              No mixed feeds—just a directory that works for shoppers and owners.
-            </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-lg border border-border bg-secondary/40 p-4">
-                  <div className="text-2xl font-semibold text-foreground">{item.value}</div>
-                  <div className="text-xs text-muted-foreground">{item.label}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid gap-8 lg:grid-cols-[1fr_1.05fr] lg:items-start">
+        <div className="site-surface-card rounded-[var(--site-radius)] p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Story</p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">From directory roots to a fuller platform</h2>
+          <p className="mt-4 text-sm leading-relaxed text-slate-600">
+            Visitors deserve accurate hours, photos, and contact paths. Owners deserve controls that feel modern, not admin-heavy.
+            Our roadmap keeps both sides aligned—search that feels fast, cards that feel human, and partnerships that respect attribution.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {[
+              ["12M+", "Monthly discovery sessions"],
+              ["40+", "Markets actively curated"],
+              ["4.8★", "Owner satisfaction (internal surveys)"],
+            ].map(([k, v]) => (
+              <div key={v} className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4">
+                <p className="text-2xl font-semibold text-slate-950">{k}</p>
+                <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">{v}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="space-y-4">
-          {values.map((value) => (
-            <Card key={value.title} className="border-border bg-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-foreground">{value.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
-              </CardContent>
-            </Card>
+          {milestones.map((m) => (
+            <div key={m.year} className="site-surface-card rounded-[var(--site-radius)] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{m.year}</p>
+              <h3 className="mt-2 text-lg font-semibold text-slate-950">{m.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{m.body}</p>
+            </div>
           ))}
         </div>
       </div>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <Card key={member.id} className="border-border bg-card transition-transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={member.avatar} alt={member.name} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{member.name}</p>
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
-                </div>
+      <div className="mt-12">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">How we work</p>
+        <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Principles behind every release</h2>
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          {principles.map(({ icon: Icon, title, body }) => (
+            <div key={title} className="flex gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-[var(--shadow-soft)]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Icon className="h-5 w-5" />
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">{member.bio}</p>
-              <p className="mt-3 text-xs text-muted-foreground">{member.location}</p>
-            </CardContent>
-          </Card>
-        ))}
+              <div>
+                <h3 className="text-lg font-semibold text-slate-950">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-14 rounded-[var(--site-radius)] border border-slate-200 bg-gradient-to-br from-primary/5 via-white to-slate-50 p-8 sm:p-10">
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">People</p>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-950">Faces behind the product</h2>
+            <p className="mt-2 max-w-xl text-sm text-slate-600">Product, partnerships, and care teams collaborate in one loop so what you see in the app matches what you hear from support.</p>
+          </div>
+          <Button variant="outline" className="shrink-0 rounded-full border-slate-200 bg-white" asChild>
+            <Link href="/careers">View open roles</Link>
+          </Button>
+        </div>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {mockTeamMembers.map((member) => (
+            <div key={member.id} className="flex gap-4 rounded-2xl border border-white/60 bg-white/90 p-5 shadow-sm backdrop-blur-sm transition-transform hover:-translate-y-0.5">
+              <Avatar className="h-14 w-14 border border-slate-100">
+                <AvatarImage src={member.avatar} alt={member.name} />
+                <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="font-semibold text-slate-950">{member.name}</p>
+                <p className="text-xs text-primary">{member.role}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{member.bio}</p>
+                <p className="mt-2 text-xs text-slate-500">{member.location}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </PageShell>
   );
