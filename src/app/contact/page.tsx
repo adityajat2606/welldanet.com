@@ -1,9 +1,11 @@
-import { Building2, Headphones, MapPin, Send } from 'lucide-react'
+import { Building2, Headphones, MapPin, Mail, Send } from 'lucide-react'
 import Link from 'next/link'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { CONTACT_PAGE_OVERRIDE_ENABLED, ContactPageOverride } from '@/overrides/contact-page'
+
+const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contact@welldanet.com'
 
 const listingContactTone = {
   panel: 'border border-slate-200 bg-white shadow-[0_24px_64px_rgba(15,23,42,0.08)]',
@@ -84,6 +86,15 @@ export default function ContactPage() {
                   <Link href="/developers" className="text-primary hover:opacity-80">
                     Developer guidelines →
                   </Link>
+                </div>
+                <div className="mt-6 pt-6 border-t border-slate-200">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Email us directly</p>
+                  <div className="mt-3 flex items-center gap-3">
+                    <Mail className="h-5 w-5 text-primary" />
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm font-semibold text-slate-950 hover:text-primary transition-colors">
+                      {CONTACT_EMAIL}
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

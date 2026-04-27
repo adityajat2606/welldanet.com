@@ -8,7 +8,6 @@ export function DirectoryNavbarCenter({ pillClass, activeClass }: { pillClass: s
   const pathname = usePathname()
 
   const homeActive = pathname === '/'
-  const listingsActive = pathname.startsWith('/listings')
 
   return (
     <div className="flex min-w-0 flex-1 items-center justify-center gap-1 sm:gap-2">
@@ -20,15 +19,6 @@ export function DirectoryNavbarCenter({ pillClass, activeClass }: { pillClass: s
         )}
       >
         Home
-      </Link>
-      <Link
-        href="/listings"
-        className={cn(
-          'rounded-full px-3 py-1.5 text-sm font-semibold transition-colors duration-200',
-          listingsActive ? activeClass : pillClass,
-        )}
-      >
-        All Listings
       </Link>
     </div>
   )

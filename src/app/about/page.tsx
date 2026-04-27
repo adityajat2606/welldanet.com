@@ -90,34 +90,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="mt-14 rounded-[var(--site-radius)] border border-slate-200 bg-gradient-to-br from-primary/5 via-white to-slate-50 p-8 sm:p-10">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">People</p>
-            <h2 className="mt-2 text-2xl font-semibold text-slate-950">Faces behind the product</h2>
-            <p className="mt-2 max-w-xl text-sm text-slate-600">Product, partnerships, and care teams collaborate in one loop so what you see in the app matches what you hear from support.</p>
-          </div>
-          <Button variant="outline" className="shrink-0 rounded-full border-slate-200 bg-white" asChild>
-            <Link href="/careers">View open roles</Link>
-          </Button>
-        </div>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {mockTeamMembers.map((member) => (
-            <div key={member.id} className="flex gap-4 rounded-2xl border border-white/60 bg-white/90 p-5 shadow-sm backdrop-blur-sm transition-transform hover:-translate-y-0.5">
-              <Avatar className="h-14 w-14 border border-slate-100">
-                <AvatarImage src={member.avatar} alt={member.name} />
-                <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-semibold text-slate-950">{member.name}</p>
-                <p className="text-xs text-primary">{member.role}</p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{member.bio}</p>
-                <p className="mt-2 text-xs text-slate-500">{member.location}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </PageShell>
   );
 }
