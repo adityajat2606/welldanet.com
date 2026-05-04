@@ -1,8 +1,12 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2, Compass, Globe, Mail, MapPin, Phone, ShieldCheck, Tag } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Compass, Globe, Mail, MapPin, Phone, ShieldCheck, Tag, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ContentImage } from '@/components/shared/content-image'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { TaskPostCard } from '@/components/shared/task-post-card'
+import { RichContent, formatRichHtml } from '@/components/shared/rich-content'
 import type { SitePost } from '@/lib/site-connector'
 import type { TaskKey } from '@/lib/site-config'
 
@@ -47,6 +51,26 @@ export function DirectoryTaskDetailPage({
     address: location || undefined,
     telephone: phone || undefined,
     email: email || undefined,
+  }
+
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  const openLightbox = (index: number) => {
+    setCurrentImageIndex(index)
+    setLightboxOpen(true)
+  }
+
+  const closeLightbox = () => {
+    setLightboxOpen(false)
+  }
+
+  const goToPrev = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+  }
+
+  const goToNext = () => {
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
   }
 
   return (
@@ -105,13 +129,21 @@ export function DirectoryTaskDetailPage({
           <div className="space-y-8">
             {/* Image Gallery */}
             <div className="overflow-hidden rounded-[2.2rem] border border-slate-200 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+              <div
+                className="relative aspect-[16/10] overflow-hidden bg-slate-100 cursor-pointer"
+                onClick={() => openLightbox(0)}
+              >
                 <ContentImage src={images[0]} alt={post.title} fill className="object-cover" />
+                <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors" />
               </div>
               {images.length > 1 ? (
                 <div className="grid grid-cols-4 gap-3 p-4">
-                  {images.slice(1, 5).map((image) => (
-                    <div key={image} className="relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer hover:ring-2 hover:ring-slate-300 transition-all">
+                  {images.slice(1, 5).map((image, idx) => (
+                    <div
+                      key={image}
+                      className="relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer hover:ring-2 hover:ring-slate-300 transition-all"
+                      onClick={() => openLightbox(idx + 1)}
+                    >
                       <ContentImage src={image} alt={post.title} fill className="object-cover" />
                     </div>
                   ))}
@@ -119,11 +151,69 @@ export function DirectoryTaskDetailPage({
               ) : null}
             </div>
 
+            {/* Image Lightbox */}
+            {lightboxOpen && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+                onClick={closeLightbox}
+              >
+                {/* Close Button */}
+                <button
+                  onClick={closeLightbox}
+                  className="absolute top-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  aria-label="Close lightbox"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+
+                {/* Navigation - Previous */}
+                {images.length > 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); goToPrev(); }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                )}
+
+                {/* Navigation - Next */}
+                {images.length > 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); goToNext(); }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                )}
+
+                {/* Image Counter */}
+                {images.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white">
+                    {currentImageIndex + 1} / {images.length}
+                  </div>
+                )}
+
+                {/* Main Image */}
+                <div
+                  className="relative max-h-[85vh] max-w-[90vw]"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img
+                    src={images[currentImageIndex]}
+                    alt={`${post.title} - Image ${currentImageIndex + 1}`}
+                    className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg"
+                  />
+                </div>
+              </div>
+            )}
+
             {/* About Section */}
             <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">About this {task}</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Overview</h2>
-              <p className="mt-4 text-base leading-8 text-slate-600">{description}</p>
+              <RichContent html={formatRichHtml(description, 'Details coming soon.')} className="mt-4 text-base leading-8 text-slate-600" />
               {highlights.length ? (
                 <div className="mt-8">
                   <h3 className="text-lg font-semibold text-slate-900">Key Highlights</h3>
