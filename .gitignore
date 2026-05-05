@@ -10,14 +10,13 @@ next.user-config.*
 
 # Environment variables
 .env*.local
-
+.env.example
 .env
 
 # Common ignores
 node_modules/
 .next/
 .DS_Store
-
 
 .env
 .env.local
